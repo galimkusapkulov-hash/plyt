@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import keygramPkg from 'keygram';
+import * as keygramModule from 'keygram';
 
-// Извлекаем класс Keygram универсальным способом
-const Keygram = keygramPkg.Keygram || keygramPkg.default || keygramPkg;
+// Подтягиваем Keygram из любого типа экспорта
+const Keygram = keygramModule.Keygram || keygramModule.default || keygramModule;
 
 // Инициализируем Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
