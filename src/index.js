@@ -1,10 +1,14 @@
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Keygram } from 'keygram';
 
 // Инициализируем Gemini API
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
+  model: 'gemini-1.5-flash',
+  systemInstruction: 'Ты — лис. Отвечай легко, мило, дружелюбно, используй :р и помогай поддерживать беседу.',
+});
 
-// Инициализация бота
+// Инициализируем бота
 const bot = new Keygram(process.env.BOT_TOKEN);
 
 bot.on('message', async (ctx) => {
@@ -12,15 +16,9 @@ bot.on('message', async (ctx) => {
   if (!userMessage) return;
 
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      config: {
-        systemInstruction: 'Ты — лис. Ты отвечаешь легко, мило, дружелюбно, используешь словечки вроде :р и помогаешь поддерживать беседу.',
-      },
-      contents: userMessage,
-    });
-
-    await ctx.reply(response.text);
+    const result = await model.generateContent(userMessage);
+    const response = await result.response;
+    await ctx.reply(response.text());
   } catch (error) {
     console.error('Ошибка при обращении к Gemini:', error);
   }
