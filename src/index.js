@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Keygram } from 'keygram';
+import Keygram from 'keygram';
 
 // Инициализируем Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
