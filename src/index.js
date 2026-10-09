@@ -1,5 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import Keygram from 'keygram';
+import keygramPkg from 'keygram';
+
+// Извлекаем класс Keygram универсальным способом
+const Keygram = keygramPkg.Keygram || keygramPkg.default || keygramPkg;
 
 // Инициализируем Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -12,7 +15,7 @@ const model = genAI.getGenerativeModel({
 const bot = new Keygram(process.env.BOT_TOKEN);
 
 bot.on('message', async (ctx) => {
-  const userMessage = ctx.message.text;
+  const userMessage = ctx.message?.text;
   if (!userMessage) return;
 
   try {
