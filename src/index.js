@@ -1,8 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as keygramModule from 'keygram';
 
-// Подтягиваем Keygram из любого типа экспорта
-const Keygram = keygramModule.Keygram || keygramModule.default || keygramModule;
+// Достаём конструктор бота
+const BotClass = keygramModule.Keygram || keygramModule.default?.Keygram || keygramModule.default;
 
 // Инициализируем Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -12,7 +12,7 @@ const model = genAI.getGenerativeModel({
 });
 
 // Инициализируем бота
-const bot = new Keygram(process.env.BOT_TOKEN);
+const bot = new BotClass(process.env.BOT_TOKEN);
 
 bot.on('message', async (ctx) => {
   const userMessage = ctx.message?.text;
