@@ -8,7 +8,7 @@ const model = genAI.getGenerativeModel({
   systemInstruction: 'Ты — лис. Отвечай легко, мило, дружелюбно, используй :р и помогай поддерживать беседу.',
 });
 
-// Инициализируем бота через TelegramBot
+// Инициализируем бота
 const bot = new TelegramBot(process.env.BOT_TOKEN);
 
 bot.on('message', async (ctx) => {
@@ -24,4 +24,9 @@ bot.on('message', async (ctx) => {
   }
 });
 
-bot.start();
+// Запускаем через startPolling (или start с пустыми параметрами)
+if (typeof bot.startPolling === 'function') {
+  bot.startPolling();
+} else {
+  bot.start('');
+}
